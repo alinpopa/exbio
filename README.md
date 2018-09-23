@@ -36,6 +36,6 @@ mix compile
 ```
 iex -S mix
 
-iex(1)> ExBio.bom("ACGGCTAGGAAAAAGACTGAGGACTGAAAA", "GAAAA")
+iex(1)> ExBio.PatternMatching.Bom.bom("ACGGCTAGGAAAAAGACTGAGGACTGAAAA", "GAAAA")
 {:ok, [8, 25]}
 ```
