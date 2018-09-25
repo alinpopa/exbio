@@ -1,8 +1,8 @@
-defmodule ExBioTest do
+defmodule ExBio.PatternMatching.BomTest do
   use ExUnit.Case
   doctest ExBio
 
-  test "pattern matching bom" do
+  test "bom" do
     assert ExBio.PatternMatching.Bom.bom("ACGGCTAGGAAAAAGACTGAGGACTGAAAA", "GAAAA") ==
              {:ok, [8, 25]}
   end

@@ -1,6 +1,5 @@
 defmodule ExBio.PatternMatching.Bom do
-  use Rustler, otp_app: :exbio, crate: :exbio
+  alias ExBio.Nif.RustBio
 
-  # When your NIF is loaded, it will override this function.
-  def bom(_text, _pattern), do: :erlang.nif_error(:nif_not_loaded)
+  def bom(text, pattern), do: RustBio.pm_bom(text, pattern)
 end
