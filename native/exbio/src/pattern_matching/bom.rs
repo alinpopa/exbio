@@ -1,5 +1,5 @@
-use rustler::{Env, Term, NifResult, Encoder};
 use bio::pattern_matching::bom::BOM;
+use rustler::{Encoder, Env, NifResult, Term};
 
 mod atoms {
     rustler_atoms! {
