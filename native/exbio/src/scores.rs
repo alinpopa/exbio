@@ -15,7 +15,7 @@ pub struct FnScore {
     fun: fn(u8, u8) -> i32,
 }
 
-pub fn blosum62<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+pub fn blosum62<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let score_fn = FnScore {
         fun: bio::scores::blosum62,
     };
@@ -23,7 +23,7 @@ pub fn blosum62<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     Ok(resource.encode(env))
 }
 
-pub fn pam120<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+pub fn pam120<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let score_fn = FnScore {
         fun: bio::scores::pam120,
     };
@@ -31,7 +31,7 @@ pub fn pam120<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     Ok(resource.encode(env))
 }
 
-pub fn pam200<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+pub fn pam200<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let score_fn = FnScore {
         fun: bio::scores::pam200,
     };
@@ -39,7 +39,7 @@ pub fn pam200<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     Ok(resource.encode(env))
 }
 
-pub fn pam250<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+pub fn pam250<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let score_fn = FnScore {
         fun: bio::scores::pam250,
     };
@@ -47,7 +47,7 @@ pub fn pam250<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     Ok(resource.encode(env))
 }
 
-pub fn pam40<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+pub fn pam40<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let score_fn = FnScore {
         fun: bio::scores::pam40,
     };

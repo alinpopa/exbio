@@ -1,5 +1,5 @@
-use rustler::{Encoder, Env, NifResult, Term};
 use rustler::resource::ResourceArc;
+use rustler::{Encoder, Env, NifResult, Term};
 use std::panic;
 
 mod atoms {
@@ -12,33 +12,51 @@ mod atoms {
 
 mod funcs {
     pub fn eq(a: u8, b: u8, left_right: (i32, i32)) -> i32 {
-        let (left, right) = left_right;
-        if a == b {left} else {right}
+        if a == b {
+            left_right.0
+        } else {
+            left_right.1
+        }
     }
 
     pub fn ne(a: u8, b: u8, left_right: (i32, i32)) -> i32 {
-        let (left, right) = left_right;
-        if a != b {left} else {right}
+        if a != b {
+            left_right.0
+        } else {
+            left_right.1
+        }
     }
 
     pub fn lt(a: u8, b: u8, left_right: (i32, i32)) -> i32 {
-        let (left, right) = left_right;
-        if a < b {left} else {right}
+        if a < b {
+            left_right.0
+        } else {
+            left_right.1
+        }
     }
 
     pub fn lte(a: u8, b: u8, left_right: (i32, i32)) -> i32 {
-        let (left, right) = left_right;
-        if a <= b {left} else {right}
+        if a <= b {
+            left_right.0
+        } else {
+            left_right.1
+        }
     }
 
     pub fn gt(a: u8, b: u8, left_right: (i32, i32)) -> i32 {
-        let (left, right) = left_right;
-        if a > b {left} else {right}
+        if a > b {
+            left_right.0
+        } else {
+            left_right.1
+        }
     }
 
     pub fn gte(a: u8, b: u8, left_right: (i32, i32)) -> i32 {
-        let (left, right) = left_right;
-        if a >= b {left} else {right}
+        if a >= b {
+            left_right.0
+        } else {
+            left_right.1
+        }
     }
 }
 
@@ -46,52 +64,33 @@ pub struct MatchFunc {
     fun: fn(u8, u8, (i32, i32)) -> i32,
 }
 
-pub fn eq<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let func = MatchFunc {
-        fun: funcs::eq,
-    };
+fn run<'a>(env: Env<'a>, func: MatchFunc) -> NifResult<Term<'a>> {
     let resource = ResourceArc::new(func);
     Ok(resource.encode(env))
 }
 
-pub fn ne<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let func = MatchFunc {
-        fun: funcs::ne,
-    };
-    let resource = ResourceArc::new(func);
-    Ok(resource.encode(env))
+pub fn eq<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    run(env, MatchFunc { fun: funcs::eq })
 }
 
-pub fn lt<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let func = MatchFunc {
-        fun: funcs::lt,
-    };
-    let resource = ResourceArc::new(func);
-    Ok(resource.encode(env))
+pub fn ne<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    run(env, MatchFunc { fun: funcs::ne })
 }
 
-pub fn lte<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let func = MatchFunc {
-        fun: funcs::lte,
-    };
-    let resource = ResourceArc::new(func);
-    Ok(resource.encode(env))
+pub fn lt<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    run(env, MatchFunc { fun: funcs::lt })
 }
 
-pub fn gt<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let func = MatchFunc {
-        fun: funcs::gt,
-    };
-    let resource = ResourceArc::new(func);
-    Ok(resource.encode(env))
+pub fn lte<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    run(env, MatchFunc { fun: funcs::lte })
 }
 
-pub fn gte<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let func = MatchFunc {
-        fun: funcs::gte,
-    };
-    let resource = ResourceArc::new(func);
-    Ok(resource.encode(env))
+pub fn gt<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    run(env, MatchFunc { fun: funcs::gt })
+}
+
+pub fn gte<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    run(env, MatchFunc { fun: funcs::gte })
 }
 
 pub fn apply<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
