@@ -5,6 +5,7 @@ extern crate rustler_codegen;
 #[macro_use]
 extern crate lazy_static;
 extern crate bio;
+extern crate bio_types;
 
 use rustler::schedule::SchedulerFlags;
 use rustler::{Env, Term};
@@ -12,6 +13,7 @@ use rustler::{Env, Term};
 mod alignment;
 mod pattern_matching;
 mod scores;
+mod types;
 
 rustler_export_nifs! {
     "Elixir.ExBio.Nif.RustBio",
@@ -37,6 +39,8 @@ rustler_export_nifs! {
         ("scores_pam250", 0, scores::pam250),
         ("scores_pam40", 0, scores::pam40),
         ("scores_apply", 3, scores::apply),
+
+        ("types_alignment_new", 1, types::alignment::new),
     ],
     Some(on_load)
 }
@@ -45,5 +49,6 @@ fn on_load<'a>(env: Env<'a>, _load_info: Term<'a>) -> bool {
     resource_struct_init!(scores::FnScore, env);
     resource_struct_init!(alignment::pairwise::matchfunc::MatchFunc, env);
     resource_struct_init!(alignment::pairwise::aligner::Aligner, env);
+    resource_struct_init!(types::alignment::AlignmentRef, env);
     true
 }

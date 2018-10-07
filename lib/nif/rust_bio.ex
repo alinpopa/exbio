@@ -29,4 +29,6 @@ defmodule ExBio.Nif.RustBio do
   def scores_pam250(), do: err()
   def scores_pam40(), do: err()
   def scores_apply(_scores_fn, _a, _b), do: err()
+
+  def types_alignment_new(_alignment), do: err()
 end

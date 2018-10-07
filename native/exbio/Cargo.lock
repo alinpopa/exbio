@@ -134,6 +134,7 @@ name = "exbio"
 version = "0.1.0"
 dependencies = [
  "bio 0.22.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bio-types 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustler 0.18.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustler_codegen 0.18.0 (registry+https://github.com/rust-lang/crates.io-index)",
