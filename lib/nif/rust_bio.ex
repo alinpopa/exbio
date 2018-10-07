@@ -11,13 +11,16 @@ defmodule ExBio.Nif.RustBio do
   def alignment_dist_ldist(_x, _y), do: err()
 
   # Alignment Pairwise MatchFunc
-  def match_func_eq(), do: err()
-  def match_func_ne(), do: err()
-  def match_func_lt(), do: err()
-  def match_func_lte(), do: err()
-  def match_func_gt(), do: err()
-  def match_func_gte(), do: err()
-  def match_func_apply(_fun, _a, _b, _left_right), do: err()
+  def match_func_eq(_left, _right), do: err()
+  def match_func_ne(_left, _right), do: err()
+  def match_func_lt(_left, _right), do: err()
+  def match_func_lte(_left, _right), do: err()
+  def match_func_gt(_left, _right), do: err()
+  def match_func_gte(_left, _right), do: err()
+  def match_func_apply(_fun, _a, _b), do: err()
+
+  # Alignment Pairwise Aligner
+  def alignment_pairwise_aligner_new(_gap_open, _gap_extend, _match_fun), do: err()
 
   # Predefined score functions
   def scores_blosum62(), do: err()

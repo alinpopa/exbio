@@ -1,17 +1,17 @@
 defmodule ExBio.Alignment.Pairwise.MatchFunc do
   alias ExBio.Nif.RustBio
 
-  def eq(), do: RustBio.match_func_eq()
+  def eq(left, right), do: RustBio.match_func_eq(left, right)
 
-  def ne(), do: RustBio.match_func_ne()
+  def ne(left, right), do: RustBio.match_func_ne(left, right)
 
-  def lt(), do: RustBio.match_func_lt()
+  def lt(left, right), do: RustBio.match_func_lt(left, right)
 
-  def lte(), do: RustBio.match_func_lte()
+  def lte(left, right), do: RustBio.match_func_lte(left, right)
 
-  def gt(), do: RustBio.match_func_gt()
+  def gt(left, right), do: RustBio.match_func_gt(left, right)
 
-  def gte(), do: RustBio.match_func_gte()
+  def gte(left, right), do: RustBio.match_func_gte(left, right)
 
-  def apply(fun, a, b, left_right), do: RustBio.match_func_apply(fun, a, b, left_right)
+  def apply(fun, a, b), do: RustBio.match_func_apply(fun, a, b)
 end
