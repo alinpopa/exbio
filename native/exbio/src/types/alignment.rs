@@ -14,7 +14,7 @@ mod atoms {
 }
 
 #[derive(NifUnitEnum)]
-enum AlignmentOperation {
+pub enum AlignmentOperation {
     Match,
     Subst,
     Del,
@@ -24,7 +24,7 @@ enum AlignmentOperation {
 }
 
 #[derive(NifUnitEnum)]
-enum AlignmentMode {
+pub enum AlignmentMode {
     Local,
     Semiglobal,
     Global,
@@ -33,7 +33,7 @@ enum AlignmentMode {
 
 #[derive(NifStruct)]
 #[module = "ExBio.Types.Alignment"]
-struct Alignment {
+pub struct Alignment {
     pub score: i32,
     pub ystart: usize,
     pub xstart: usize,
@@ -49,24 +49,17 @@ pub struct AlignmentRef {
     pub alignment: BioAlignment,
 }
 
-fn to_bio_op(ops: Vec<(AlignmentOperation, usize)>) -> Vec<BioAlignmentOperation> {
-    ops.iter()
-        .map(|op| match op {
-            (AlignmentOperation::Match, _) => BioAlignmentOperation::Match,
-            (AlignmentOperation::Subst, _) => BioAlignmentOperation::Subst,
-            (AlignmentOperation::Del, _) => BioAlignmentOperation::Del,
-            (AlignmentOperation::Ins, _) => BioAlignmentOperation::Ins,
-            (AlignmentOperation::Xclip, val) => BioAlignmentOperation::Xclip(*val),
-            (AlignmentOperation::Yclip, val) => BioAlignmentOperation::Yclip(*val),
-        }).collect()
-}
-
-fn to_bio_mode(mode: AlignmentMode) -> BioAlignmentMode {
-    match mode {
-        AlignmentMode::Local => BioAlignmentMode::Local,
-        AlignmentMode::Semiglobal => BioAlignmentMode::Semiglobal,
-        AlignmentMode::Global => BioAlignmentMode::Global,
-        AlignmentMode::Custom => BioAlignmentMode::Custom,
+pub fn from_bio(bio: BioAlignment) -> Alignment {
+    Alignment {
+        score: bio.score,
+        ystart: bio.ystart,
+        xstart: bio.xstart,
+        yend: bio.yend,
+        xend: bio.xend,
+        ylen: bio.ylen,
+        xlen: bio.xlen,
+        operations: from_bio_ops(bio.operations),
+        mode: from_bio_mode(bio.mode),
     }
 }
 
@@ -81,10 +74,52 @@ pub fn new<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
             xend: align.xend,
             ylen: align.ylen,
             xlen: align.xlen,
-            operations: to_bio_op(align.operations),
+            operations: to_bio_ops(align.operations),
             mode: to_bio_mode(align.mode),
         },
     };
     let resource = ResourceArc::new(alignment);
     Ok((atoms::ok(), resource).encode(env))
+}
+
+fn to_bio_ops(ops: Vec<(AlignmentOperation, usize)>) -> Vec<BioAlignmentOperation> {
+    ops.iter()
+        .map(|op| match op {
+            (AlignmentOperation::Match, _) => BioAlignmentOperation::Match,
+            (AlignmentOperation::Subst, _) => BioAlignmentOperation::Subst,
+            (AlignmentOperation::Del, _) => BioAlignmentOperation::Del,
+            (AlignmentOperation::Ins, _) => BioAlignmentOperation::Ins,
+            (AlignmentOperation::Xclip, val) => BioAlignmentOperation::Xclip(*val),
+            (AlignmentOperation::Yclip, val) => BioAlignmentOperation::Yclip(*val),
+        }).collect()
+}
+
+fn from_bio_ops(ops: Vec<BioAlignmentOperation>) -> Vec<(AlignmentOperation, usize)> {
+    ops.iter()
+        .map(|op| match op {
+            BioAlignmentOperation::Match => (AlignmentOperation::Match, 0),
+            BioAlignmentOperation::Subst => (AlignmentOperation::Subst, 0),
+            BioAlignmentOperation::Del => (AlignmentOperation::Del, 0),
+            BioAlignmentOperation::Ins => (AlignmentOperation::Ins, 0),
+            BioAlignmentOperation::Xclip(val) => (AlignmentOperation::Xclip, *val),
+            BioAlignmentOperation::Yclip(val) => (AlignmentOperation::Yclip, *val),
+        }).collect()
+}
+
+fn to_bio_mode(mode: AlignmentMode) -> BioAlignmentMode {
+    match mode {
+        AlignmentMode::Local => BioAlignmentMode::Local,
+        AlignmentMode::Semiglobal => BioAlignmentMode::Semiglobal,
+        AlignmentMode::Global => BioAlignmentMode::Global,
+        AlignmentMode::Custom => BioAlignmentMode::Custom,
+    }
+}
+
+fn from_bio_mode(mode: BioAlignmentMode) -> AlignmentMode {
+    match mode {
+        BioAlignmentMode::Local => AlignmentMode::Local,
+        BioAlignmentMode::Semiglobal => AlignmentMode::Semiglobal,
+        BioAlignmentMode::Global => AlignmentMode::Global,
+        BioAlignmentMode::Custom => AlignmentMode::Custom,
+    }
 }

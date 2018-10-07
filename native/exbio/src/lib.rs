@@ -18,10 +18,13 @@ mod types;
 rustler_export_nifs! {
     "Elixir.ExBio.Nif.RustBio",
     [
-        ("pm_bom", 2, pattern_matching::bom::bom, SchedulerFlags::DirtyCpu),
+        ("pm_bom", 2, pattern_matching::bom::bom,
+         SchedulerFlags::DirtyCpu),
 
-        ("alignment_dist_hdist", 2, alignment::distance::hamming, SchedulerFlags::DirtyCpu),
-        ("alignment_dist_ldist", 2, alignment::distance::levenshtein, SchedulerFlags::DirtyCpu),
+        ("alignment_dist_hdist", 2, alignment::distance::hamming,
+         SchedulerFlags::DirtyCpu),
+        ("alignment_dist_ldist", 2, alignment::distance::levenshtein,
+         SchedulerFlags::DirtyCpu),
 
         ("match_func_eq", 2, alignment::pairwise::matchfunc::eq),
         ("match_func_ne", 2, alignment::pairwise::matchfunc::ne),
@@ -32,6 +35,17 @@ rustler_export_nifs! {
         ("match_func_apply", 3, alignment::pairwise::matchfunc::apply),
 
         ("alignment_pairwise_aligner_new", 3, alignment::pairwise::aligner::new),
+        ("alignment_pairwise_aligner_with_capacity", 5, alignment::pairwise::aligner::with_capacity),
+        ("alignment_pairwise_aligner_custom", 3, alignment::pairwise::aligner::custom,
+         SchedulerFlags::DirtyCpu),
+        ("alignment_pairwise_aligner_semiglobal", 3, alignment::pairwise::aligner::semiglobal,
+         SchedulerFlags::DirtyCpu),
+
+        ("alignment_pairwise_scoring_new", 3, alignment::pairwise::scoring::new),
+        ("alignment_pairwise_scoring_from_scores", 4, alignment::pairwise::scoring::from_scores),
+        ("alignment_pairwise_scoring_from_scoring", 1, alignment::pairwise::scoring::from_scoring),
+        ("alignment_pairwise_scoring_xclip", 2, alignment::pairwise::scoring::xclip),
+        ("alignment_pairwise_scoring_yclip", 2, alignment::pairwise::scoring::yclip),
 
         ("scores_blosum62", 0, scores::blosum62),
         ("scores_pam120", 0, scores::pam120),

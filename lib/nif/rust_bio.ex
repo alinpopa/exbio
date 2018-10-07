@@ -22,6 +22,28 @@ defmodule ExBio.Nif.RustBio do
   # Alignment Pairwise Aligner
   def alignment_pairwise_aligner_new(_gap_open, _gap_extend, _match_fun), do: err()
 
+  def alignment_pairwise_aligner_with_capacity(_m, _n, _gap_open, _gap_extend, _match_fun),
+    do: err()
+
+  def alignment_pairwise_aligner_custom(_aligner, _x, _y), do: err()
+  def alignment_pairwise_aligner_semiglobal(_aligner, _x, _y), do: err()
+
+  # Alignment Pairwise Scoring
+  def alignment_pairwise_scoring_new(_gap_open, _gap_extend, _match_func), do: err()
+
+  def alignment_pairwise_scoring_from_scores(
+        _gap_open,
+        _gap_extend,
+        _match_score,
+        _mismatch_score
+      ),
+      do: err()
+
+  def alignment_pairwise_scoring_from_scoring(_scoring), do: err()
+
+  def alignment_pairwise_scoring_xclip(_scoring, _penalty), do: err()
+  def alignment_pairwise_scoring_yclip(_scoring, _penalty), do: err()
+
   # Predefined score functions
   def scores_blosum62(), do: err()
   def scores_pam120(), do: err()
@@ -30,5 +52,6 @@ defmodule ExBio.Nif.RustBio do
   def scores_pam40(), do: err()
   def scores_apply(_scores_fn, _a, _b), do: err()
 
+  # Bio Types Alignment
   def types_alignment_new(_alignment), do: err()
 end
