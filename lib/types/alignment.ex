@@ -15,6 +15,7 @@ defmodule ExBio.Types.Alignment do
     case RustBio.types_alignment_new(alignment) do
       {:ok, ref} when is_reference(ref) ->
         {:ok, ref}
+
       _err ->
         {:error, :invalid_args}
     end

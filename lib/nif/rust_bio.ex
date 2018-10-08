@@ -40,6 +40,7 @@ defmodule ExBio.Nif.RustBio do
       do: err()
 
   def alignment_pairwise_scoring_from_scoring(_scoring), do: err()
+  def alignment_pairwise_scoring_to_scoring(_scoring), do: err()
 
   def alignment_pairwise_scoring_xclip(_scoring, _penalty), do: err()
   def alignment_pairwise_scoring_yclip(_scoring, _penalty), do: err()

@@ -11,6 +11,7 @@ mod atoms {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct MatchFunc {
     pub left: i32,
     pub fun: fn(u8, u8) -> bool,

@@ -44,6 +44,7 @@ rustler_export_nifs! {
         ("alignment_pairwise_scoring_new", 3, alignment::pairwise::scoring::new),
         ("alignment_pairwise_scoring_from_scores", 4, alignment::pairwise::scoring::from_scores),
         ("alignment_pairwise_scoring_from_scoring", 1, alignment::pairwise::scoring::from_scoring),
+        ("alignment_pairwise_scoring_to_scoring", 1, alignment::pairwise::scoring::to_scoring),
         ("alignment_pairwise_scoring_xclip", 2, alignment::pairwise::scoring::xclip),
         ("alignment_pairwise_scoring_yclip", 2, alignment::pairwise::scoring::yclip),
 
@@ -63,6 +64,7 @@ fn on_load<'a>(env: Env<'a>, _load_info: Term<'a>) -> bool {
     resource_struct_init!(scores::FnScore, env);
     resource_struct_init!(alignment::pairwise::matchfunc::MatchFunc, env);
     resource_struct_init!(alignment::pairwise::aligner::Aligner, env);
+    resource_struct_init!(alignment::pairwise::scoring::ScoringRef, env);
     resource_struct_init!(types::alignment::AlignmentRef, env);
     true
 }
