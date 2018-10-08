@@ -8,8 +8,8 @@ mod atoms {
 }
 
 pub fn bom<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let text: String = try!(args[0].decode());
-    let pattern: String = try!(args[1].decode());
+    let text: String = args[0].decode()?;
+    let pattern: String = args[1].decode()?;
 
     let bom = BOM::new(pattern.as_bytes());
     let occ: Vec<usize> = bom.find_all(text.as_bytes()).collect();

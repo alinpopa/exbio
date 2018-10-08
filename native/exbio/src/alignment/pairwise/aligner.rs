@@ -67,8 +67,8 @@ pub fn with_capacity<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>>
 pub fn custom<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let resource: ResourceArc<Aligner> = args[0].decode()?;
     let mut aligner = resource.aligner.write().unwrap();
-    let x: String = try!(args[1].decode());
-    let y: String = try!(args[2].decode());
+    let x: String = args[1].decode()?;
+    let y: String = args[2].decode()?;
     let x: TextSlice = x.as_bytes();
     let y: TextSlice = y.as_bytes();
     let alignment = aligner.custom(x, y);
@@ -79,8 +79,8 @@ pub fn custom<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
 pub fn semiglobal<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let resource: ResourceArc<Aligner> = args[0].decode()?;
     let mut aligner = resource.aligner.write().unwrap();
-    let x: String = try!(args[1].decode());
-    let y: String = try!(args[2].decode());
+    let x: String = args[1].decode()?;
+    let y: String = args[2].decode()?;
     let x: TextSlice = x.as_bytes();
     let y: TextSlice = y.as_bytes();
     let alignment = aligner.semiglobal(x, y);
