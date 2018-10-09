@@ -26,9 +26,12 @@ defmodule ExBio.Nif.RustBio do
     do: err()
 
   def alignment_pairwise_aligner_with_scoring(_scoring), do: err()
+  def alignment_pairwise_aligner_with_capacity_and_scoring(_m, _n, _scoring), do: err()
 
   def alignment_pairwise_aligner_custom(_aligner, _x, _y), do: err()
   def alignment_pairwise_aligner_semiglobal(_aligner, _x, _y), do: err()
+  def alignment_pairwise_aligner_global(_aligner, _x, _y), do: err()
+  def alignment_pairwise_aligner_local(_aligner, _x, _y), do: err()
 
   # Alignment Pairwise Scoring
   def alignment_pairwise_scoring_new(_gap_open, _gap_extend, _match_func), do: err()

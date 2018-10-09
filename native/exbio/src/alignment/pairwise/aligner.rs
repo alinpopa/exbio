@@ -80,6 +80,23 @@ pub fn with_scoring<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> 
     }
 }
 
+pub fn with_capacity_and_scoring<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let m: usize = args[0].decode()?;
+    let n: usize = args[1].decode()?;
+    let resource: ResourceArc<ScoringRef> = args[2].decode()?;
+    let scoring = resource.scoring.clone();
+    let result = panic::catch_unwind(|| BioAligner::with_capacity_and_scoring(m, n, scoring));
+    match result {
+        Ok(aligner) => {
+            let resource = ResourceArc::new(Aligner {
+                aligner: RwLock::new(aligner),
+            });
+            Ok((atoms::ok(), resource.encode(env)).encode(env))
+        }
+        Err(_) => Ok((atoms::error(), atoms::invalid_args()).encode(env)),
+    }
+}
+
 pub fn custom<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let resource: ResourceArc<Aligner> = args[0].decode()?;
     let mut aligner = resource.aligner.write().unwrap();
@@ -100,6 +117,30 @@ pub fn semiglobal<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let x: TextSlice = x.as_bytes();
     let y: TextSlice = y.as_bytes();
     let alignment = aligner.semiglobal(x, y);
+    let alignment = alignment::from_bio(alignment);
+    Ok((atoms::ok(), alignment).encode(env))
+}
+
+pub fn global<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let resource: ResourceArc<Aligner> = args[0].decode()?;
+    let mut aligner = resource.aligner.write().unwrap();
+    let x: String = args[1].decode()?;
+    let y: String = args[2].decode()?;
+    let x: TextSlice = x.as_bytes();
+    let y: TextSlice = y.as_bytes();
+    let alignment = aligner.global(x, y);
+    let alignment = alignment::from_bio(alignment);
+    Ok((atoms::ok(), alignment).encode(env))
+}
+
+pub fn local<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let resource: ResourceArc<Aligner> = args[0].decode()?;
+    let mut aligner = resource.aligner.write().unwrap();
+    let x: String = args[1].decode()?;
+    let y: String = args[2].decode()?;
+    let x: TextSlice = x.as_bytes();
+    let y: TextSlice = y.as_bytes();
+    let alignment = aligner.local(x, y);
     let alignment = alignment::from_bio(alignment);
     Ok((atoms::ok(), alignment).encode(env))
 }
