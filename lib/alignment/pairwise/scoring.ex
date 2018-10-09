@@ -10,6 +10,14 @@ defmodule ExBio.Alignment.Pairwise.Scoring do
             yclip_suffix: 0,
             match_func: nil
 
+  @min_score -858_993_459
+
+  defmacro min_score do
+    quote do
+      unquote(@min_score)
+    end
+  end
+
   def new(gap_open, gap_extend, match_func) when gap_open <= 0 and gap_extend <= 0,
     do: RustBio.alignment_pairwise_scoring_new(gap_open, gap_extend, match_func)
 

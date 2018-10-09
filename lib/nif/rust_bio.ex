@@ -25,6 +25,8 @@ defmodule ExBio.Nif.RustBio do
   def alignment_pairwise_aligner_with_capacity(_m, _n, _gap_open, _gap_extend, _match_fun),
     do: err()
 
+  def alignment_pairwise_aligner_with_scoring(_scoring), do: err()
+
   def alignment_pairwise_aligner_custom(_aligner, _x, _y), do: err()
   def alignment_pairwise_aligner_semiglobal(_aligner, _x, _y), do: err()
 

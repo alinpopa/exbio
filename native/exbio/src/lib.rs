@@ -36,6 +36,7 @@ rustler_export_nifs! {
 
         ("alignment_pairwise_aligner_new", 3, alignment::pairwise::aligner::new),
         ("alignment_pairwise_aligner_with_capacity", 5, alignment::pairwise::aligner::with_capacity),
+        ("alignment_pairwise_aligner_with_scoring", 1, alignment::pairwise::aligner::with_scoring),
         ("alignment_pairwise_aligner_custom", 3, alignment::pairwise::aligner::custom,
          SchedulerFlags::DirtyCpu),
         ("alignment_pairwise_aligner_semiglobal", 3, alignment::pairwise::aligner::semiglobal,

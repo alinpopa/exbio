@@ -20,6 +20,9 @@ defmodule ExBio.Alignment.Pairwise.Aligner do
   def with_capacity(_x_len, _y_len, _gap_open, _gap_extend, _fun_match),
     do: {:error, :invalid_args}
 
+  def with_scoring(scoring),
+    do: RustBio.alignment_pairwise_aligner_with_scoring(scoring)
+
   def custom(aligner, x, y),
     do: RustBio.alignment_pairwise_aligner_custom(aligner, x, y)
 
