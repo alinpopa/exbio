@@ -60,4 +60,7 @@ defmodule ExBio.Nif.RustBio do
 
   # Bio Types Alignment
   def types_alignment_new(_alignment), do: err()
+  def types_alignment_pretty(_alignment, _x, _y), do: err()
+  def types_alignment_cigar(_alignment, _hard_clip), do: err()
+  def types_alignment_filter_clip_operations(_alignment), do: err()
 end

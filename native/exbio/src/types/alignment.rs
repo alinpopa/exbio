@@ -1,9 +1,11 @@
+use bio::utils::TextSlice;
 use bio_types::alignment::{
     Alignment as BioAlignment, AlignmentMode as BioAlignmentMode,
     AlignmentOperation as BioAlignmentOperation,
 };
 use rustler::resource::ResourceArc;
 use rustler::{Encoder, Env, NifResult, Term};
+use std::sync::RwLock;
 
 mod atoms {
     rustler_atoms! {
@@ -46,7 +48,7 @@ pub struct Alignment {
 }
 
 pub struct AlignmentRef {
-    pub alignment: BioAlignment,
+    pub alignment: RwLock<BioAlignment>,
 }
 
 pub fn from_bio(bio: BioAlignment) -> Alignment {
@@ -66,7 +68,7 @@ pub fn from_bio(bio: BioAlignment) -> Alignment {
 pub fn new<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let align: Alignment = args[0].decode()?;
     let alignment = AlignmentRef {
-        alignment: BioAlignment {
+        alignment: RwLock::new(BioAlignment {
             score: align.score,
             ystart: align.ystart,
             xstart: align.xstart,
@@ -76,10 +78,36 @@ pub fn new<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
             xlen: align.xlen,
             operations: to_bio_ops(align.operations),
             mode: to_bio_mode(align.mode),
-        },
+        }),
     };
     let resource = ResourceArc::new(alignment);
     Ok((atoms::ok(), resource).encode(env))
+}
+
+pub fn pretty<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let resource: ResourceArc<AlignmentRef> = args[0].decode()?;
+    let x: String = args[1].decode()?;
+    let y: String = args[2].decode()?;
+    let x: TextSlice = x.as_bytes();
+    let y: TextSlice = y.as_bytes();
+    let alignment = resource.alignment.read().unwrap();
+    let pretty = alignment.pretty(x, y);
+    Ok((atoms::ok(), pretty).encode(env))
+}
+
+pub fn cigar<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let resource: ResourceArc<AlignmentRef> = args[0].decode()?;
+    let hard_clip: bool = args[1].decode()?;
+    let alignment = resource.alignment.read().unwrap();
+    let cigar = alignment.cigar(hard_clip);
+    Ok((atoms::ok(), cigar).encode(env))
+}
+
+pub fn filter_clip_operations<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let resource: ResourceArc<AlignmentRef> = args[0].decode()?;
+    let mut alignment = resource.alignment.write().unwrap();
+    alignment.filter_clip_operations();
+    Ok(atoms::ok().encode(env))
 }
 
 fn to_bio_ops(ops: Vec<(AlignmentOperation, usize)>) -> Vec<BioAlignmentOperation> {

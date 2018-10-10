@@ -20,4 +20,13 @@ defmodule ExBio.Types.Alignment do
         {:error, :invalid_args}
     end
   end
+
+  def pretty(alignment, x, y),
+    do: RustBio.types_alignment_pretty(alignment, x, y)
+
+  def cigar(alignment, hard_clip),
+    do: RustBio.types_alignment_cigar(alignment, hard_clip)
+
+  def filter_clip_operations(alignment),
+    do: RustBio.types_alignment_filter_clip_operations(alignment)
 end
