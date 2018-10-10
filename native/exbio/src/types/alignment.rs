@@ -60,7 +60,7 @@ pub fn from_bio(bio: BioAlignment) -> Alignment {
         xend: bio.xend,
         ylen: bio.ylen,
         xlen: bio.xlen,
-        operations: from_bio_ops(bio.operations),
+        operations: bio.operations.iter().map(|op| from_bio_op(op)).collect(),
         mode: from_bio_mode(bio.mode),
     }
 }
@@ -76,7 +76,7 @@ pub fn new<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
             xend: align.xend,
             ylen: align.ylen,
             xlen: align.xlen,
-            operations: to_bio_ops(align.operations),
+            operations: align.operations.iter().map(|op| to_bio_op(op)).collect(),
             mode: to_bio_mode(align.mode),
         }),
     };
@@ -103,6 +103,17 @@ pub fn cigar<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     Ok((atoms::ok(), cigar).encode(env))
 }
 
+pub fn path<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let resource: ResourceArc<AlignmentRef> = args[0].decode()?;
+    let alignment = resource.alignment.read().unwrap();
+    let path = alignment.path();
+    let path = path
+        .iter()
+        .map(|(x_i, y_i, op)| (x_i, y_i, from_bio_op(op)))
+        .collect::<Vec<_>>();
+    Ok((atoms::ok(), path).encode(env))
+}
+
 pub fn filter_clip_operations<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let resource: ResourceArc<AlignmentRef> = args[0].decode()?;
     let mut alignment = resource.alignment.write().unwrap();
@@ -110,28 +121,26 @@ pub fn filter_clip_operations<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<
     Ok(atoms::ok().encode(env))
 }
 
-fn to_bio_ops(ops: Vec<(AlignmentOperation, usize)>) -> Vec<BioAlignmentOperation> {
-    ops.iter()
-        .map(|op| match op {
-            (AlignmentOperation::Match, _) => BioAlignmentOperation::Match,
-            (AlignmentOperation::Subst, _) => BioAlignmentOperation::Subst,
-            (AlignmentOperation::Del, _) => BioAlignmentOperation::Del,
-            (AlignmentOperation::Ins, _) => BioAlignmentOperation::Ins,
-            (AlignmentOperation::Xclip, val) => BioAlignmentOperation::Xclip(*val),
-            (AlignmentOperation::Yclip, val) => BioAlignmentOperation::Yclip(*val),
-        }).collect()
+fn to_bio_op(op: &(AlignmentOperation, usize)) -> BioAlignmentOperation {
+    match op {
+        (AlignmentOperation::Match, _) => BioAlignmentOperation::Match,
+        (AlignmentOperation::Subst, _) => BioAlignmentOperation::Subst,
+        (AlignmentOperation::Del, _) => BioAlignmentOperation::Del,
+        (AlignmentOperation::Ins, _) => BioAlignmentOperation::Ins,
+        (AlignmentOperation::Xclip, val) => BioAlignmentOperation::Xclip(*val),
+        (AlignmentOperation::Yclip, val) => BioAlignmentOperation::Yclip(*val),
+    }
 }
 
-fn from_bio_ops(ops: Vec<BioAlignmentOperation>) -> Vec<(AlignmentOperation, usize)> {
-    ops.iter()
-        .map(|op| match op {
-            BioAlignmentOperation::Match => (AlignmentOperation::Match, 0),
-            BioAlignmentOperation::Subst => (AlignmentOperation::Subst, 0),
-            BioAlignmentOperation::Del => (AlignmentOperation::Del, 0),
-            BioAlignmentOperation::Ins => (AlignmentOperation::Ins, 0),
-            BioAlignmentOperation::Xclip(val) => (AlignmentOperation::Xclip, *val),
-            BioAlignmentOperation::Yclip(val) => (AlignmentOperation::Yclip, *val),
-        }).collect()
+fn from_bio_op(op: &BioAlignmentOperation) -> (AlignmentOperation, usize) {
+    match op {
+        BioAlignmentOperation::Match => (AlignmentOperation::Match, 0),
+        BioAlignmentOperation::Subst => (AlignmentOperation::Subst, 0),
+        BioAlignmentOperation::Del => (AlignmentOperation::Del, 0),
+        BioAlignmentOperation::Ins => (AlignmentOperation::Ins, 0),
+        BioAlignmentOperation::Xclip(val) => (AlignmentOperation::Xclip, *val),
+        BioAlignmentOperation::Yclip(val) => (AlignmentOperation::Yclip, *val),
+    }
 }
 
 fn to_bio_mode(mode: AlignmentMode) -> BioAlignmentMode {

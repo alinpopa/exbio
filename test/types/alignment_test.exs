@@ -83,6 +83,45 @@ defmodule ExBio.Types.AlignmentTest do
     end
   end
 
+  describe "path" do
+    test "return a valid path" do
+      alignment = %ExBio.Types.Alignment{
+        score: 5,
+        xstart: 3,
+        ystart: 0,
+        xend: 9,
+        yend: 10,
+        ylen: 10,
+        xlen: 10,
+        mode: :semiglobal,
+        operations: [
+          {:match, 0},
+          {:match, 0},
+          {:match, 0},
+          {:subst, 0},
+          {:ins, 0},
+          {:ins, 0},
+          {:del, 0},
+          {:del, 0}
+        ]
+      }
+
+      {:ok, alignment} = ExBio.Types.Alignment.new(alignment)
+      {:ok, path} = ExBio.Types.Alignment.path(alignment)
+
+      assert path == [
+               {4, 5, {:match, 0}},
+               {5, 6, {:match, 0}},
+               {6, 7, {:match, 0}},
+               {7, 8, {:subst, 0}},
+               {8, 8, {:ins, 0}},
+               {9, 8, {:ins, 0}},
+               {9, 9, {:del, 0}},
+               {9, 10, {:del, 0}}
+             ]
+    end
+  end
+
   describe "filter_clip_operations" do
     test "filter out xclip and yclip operations from the list of operations" do
       operations = [

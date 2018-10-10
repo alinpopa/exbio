@@ -27,6 +27,9 @@ defmodule ExBio.Types.Alignment do
   def cigar(alignment, hard_clip),
     do: RustBio.types_alignment_cigar(alignment, hard_clip)
 
+  def path(alignment),
+    do: RustBio.types_alignment_path(alignment)
+
   def filter_clip_operations(alignment),
     do: RustBio.types_alignment_filter_clip_operations(alignment)
 end
