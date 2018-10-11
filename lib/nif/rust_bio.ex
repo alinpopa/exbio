@@ -50,6 +50,11 @@ defmodule ExBio.Nif.RustBio do
   def alignment_pairwise_scoring_xclip(_scoring, _penalty), do: err()
   def alignment_pairwise_scoring_yclip(_scoring, _penalty), do: err()
 
+  # Alignment Pairwise TracebackCell
+  def alignment_pairwise_tracebackcell_new(), do: err()
+  def alignment_pairwise_tracebackcell_set_bits(_tracebackcell, _op, _value), do: err()
+  def alignment_pairwise_tracebackcell_get_bits(_tracebackcell, _op), do: err()
+
   # Predefined score functions
   def scores_blosum62(), do: err()
   def scores_pam120(), do: err()
