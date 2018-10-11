@@ -145,4 +145,42 @@ defmodule ExBio.Types.AlignmentTest do
       assert pretty == ""
     end
   end
+
+  describe "y_aln_len" do
+    test "number of bases in reference sequence that are aligned" do
+      operations = [
+        {:xclip, 10},
+        {:yclip, 1}
+      ]
+
+      alignment = %ExBio.Types.Alignment{
+        mode: :local,
+        operations: operations,
+        yend: 10,
+        ystart: 7
+      }
+
+      {:ok, alignment} = ExBio.Types.Alignment.new(alignment)
+
+      {:ok, y_aln_len} = ExBio.Types.Alignment.y_aln_len(alignment)
+
+      assert y_aln_len == 3
+    end
+  end
+
+  describe "x_aln_len" do
+    test "number of bases in query sequence that are aigned" do
+      operations = [
+        {:xclip, 10},
+        {:yclip, 1}
+      ]
+
+      alignment = %ExBio.Types.Alignment{mode: :local, operations: operations, xend: 5, xstart: 3}
+      {:ok, alignment} = ExBio.Types.Alignment.new(alignment)
+
+      {:ok, x_aln_len} = ExBio.Types.Alignment.x_aln_len(alignment)
+
+      assert x_aln_len == 2
+    end
+  end
 end

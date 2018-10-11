@@ -64,4 +64,6 @@ defmodule ExBio.Nif.RustBio do
   def types_alignment_cigar(_alignment, _hard_clip), do: err()
   def types_alignment_path(_alignment), do: err()
   def types_alignment_filter_clip_operations(_alignment), do: err()
+  def types_alignment_y_aln_len(_alignment), do: err()
+  def types_alignment_x_aln_len(_alignment), do: err()
 end

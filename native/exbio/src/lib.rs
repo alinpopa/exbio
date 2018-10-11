@@ -66,6 +66,8 @@ rustler_export_nifs! {
         ("types_alignment_cigar", 2, types::alignment::cigar),
         ("types_alignment_path", 1, types::alignment::path),
         ("types_alignment_filter_clip_operations", 1, types::alignment::filter_clip_operations),
+        ("types_alignment_y_aln_len", 1, types::alignment::y_aln_len),
+        ("types_alignment_x_aln_len", 1, types::alignment::x_aln_len),
     ],
     Some(on_load)
 }

@@ -121,6 +121,20 @@ pub fn filter_clip_operations<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<
     Ok(atoms::ok().encode(env))
 }
 
+pub fn y_aln_len<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let resource: ResourceArc<AlignmentRef> = args[0].decode()?;
+    let alignment = resource.alignment.read().unwrap();
+    let y_aln_len = alignment.y_aln_len();
+    Ok((atoms::ok(), y_aln_len).encode(env))
+}
+
+pub fn x_aln_len<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let resource: ResourceArc<AlignmentRef> = args[0].decode()?;
+    let alignment = resource.alignment.read().unwrap();
+    let x_aln_len = alignment.x_aln_len();
+    Ok((atoms::ok(), x_aln_len).encode(env))
+}
+
 fn to_bio_op(op: &(AlignmentOperation, usize)) -> BioAlignmentOperation {
     match op {
         (AlignmentOperation::Match, _) => BioAlignmentOperation::Match,

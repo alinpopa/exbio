@@ -32,4 +32,10 @@ defmodule ExBio.Types.Alignment do
 
   def filter_clip_operations(alignment),
     do: RustBio.types_alignment_filter_clip_operations(alignment)
+
+  def y_aln_len(alignment),
+    do: RustBio.types_alignment_y_aln_len(alignment)
+
+  def x_aln_len(alignment),
+    do: RustBio.types_alignment_x_aln_len(alignment)
 end
