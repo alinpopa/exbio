@@ -11,6 +11,16 @@ mod atoms {
     }
 }
 
+#[derive(NifUnitEnum, Clone)]
+pub enum FunType {
+    Eq,
+    Ne,
+    Lt,
+    Lte,
+    Gt,
+    Gte,
+}
+
 #[derive(Debug, Clone, Copy)]
 pub struct MatchFunc {
     pub left: i32,
@@ -29,40 +39,16 @@ impl BioMatchFunc for MatchFunc {
     }
 }
 
-fn run<'a>(env: Env<'a>, args: &[Term<'a>], func: fn(u8, u8) -> bool) -> NifResult<Term<'a>> {
-    let left: i32 = args[0].decode()?;
-    let right: i32 = args[1].decode()?;
-    let match_func = MatchFunc {
-        left: left,
-        fun: func,
-        right: right,
-    };
-    let resource = ResourceArc::new(match_func);
-    Ok(resource.encode(env))
-}
-
-pub fn eq<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    run(env, args, |a: u8, b: u8| a == b)
-}
-
-pub fn ne<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    run(env, args, |a: u8, b: u8| a != b)
-}
-
-pub fn lt<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    run(env, args, |a: u8, b: u8| a < b)
-}
-
-pub fn lte<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    run(env, args, |a: u8, b: u8| a <= b)
-}
-
-pub fn gt<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    run(env, args, |a: u8, b: u8| a > b)
-}
-
-pub fn gte<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    run(env, args, |a: u8, b: u8| a >= b)
+pub fn matchfunc<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let fun_type: FunType = args[0].decode()?;
+    match fun_type {
+        FunType::Eq => run(env, args, |a: u8, b: u8| a == b),
+        FunType::Ne => run(env, args, |a: u8, b: u8| a != b),
+        FunType::Lt => run(env, args, |a: u8, b: u8| a < b),
+        FunType::Lte => run(env, args, |a: u8, b: u8| a <= b),
+        FunType::Gt => run(env, args, |a: u8, b: u8| a > b),
+        FunType::Gte => run(env, args, |a: u8, b: u8| a >= b),
+    }
 }
 
 pub fn apply<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
@@ -81,4 +67,16 @@ pub fn apply<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
         Ok(r) => Ok((atoms::ok(), r).encode(env)),
         Err(_) => Ok((atoms::error(), atoms::invalid_args()).encode(env)),
     }
+}
+
+fn run<'a>(env: Env<'a>, args: &[Term<'a>], func: fn(u8, u8) -> bool) -> NifResult<Term<'a>> {
+    let left: i32 = args[1].decode()?;
+    let right: i32 = args[2].decode()?;
+    let match_func = MatchFunc {
+        left: left,
+        fun: func,
+        right: right,
+    };
+    let resource = ResourceArc::new(match_func);
+    Ok(resource.encode(env))
 }

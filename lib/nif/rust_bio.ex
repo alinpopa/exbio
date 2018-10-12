@@ -11,12 +11,7 @@ defmodule ExBio.Nif.RustBio do
   def alignment_dist_ldist(_x, _y), do: err()
 
   # Alignment Pairwise MatchFunc
-  def match_func_eq(_left, _right), do: err()
-  def match_func_ne(_left, _right), do: err()
-  def match_func_lt(_left, _right), do: err()
-  def match_func_lte(_left, _right), do: err()
-  def match_func_gt(_left, _right), do: err()
-  def match_func_gte(_left, _right), do: err()
+  def match_func(_op, _left, _right), do: err()
   def match_func_apply(_fun, _a, _b), do: err()
 
   # Alignment Pairwise Aligner
@@ -27,11 +22,7 @@ defmodule ExBio.Nif.RustBio do
 
   def alignment_pairwise_aligner_with_scoring(_scoring), do: err()
   def alignment_pairwise_aligner_with_capacity_and_scoring(_m, _n, _scoring), do: err()
-
-  def alignment_pairwise_aligner_custom(_aligner, _x, _y), do: err()
-  def alignment_pairwise_aligner_semiglobal(_aligner, _x, _y), do: err()
-  def alignment_pairwise_aligner_global(_aligner, _x, _y), do: err()
-  def alignment_pairwise_aligner_local(_aligner, _x, _y), do: err()
+  def alignment_pairwise_aligner_apply(_aligner, _op, _x, _y), do: err()
 
   # Alignment Pairwise Scoring
   def alignment_pairwise_scoring_new(_gap_open, _gap_extend, _match_func), do: err()
@@ -56,11 +47,7 @@ defmodule ExBio.Nif.RustBio do
   def alignment_pairwise_tracebackcell_get_bits(_tracebackcell, _op), do: err()
 
   # Predefined score functions
-  def scores_blosum62(), do: err()
-  def scores_pam120(), do: err()
-  def scores_pam200(), do: err()
-  def scores_pam250(), do: err()
-  def scores_pam40(), do: err()
+  def scores_fun(_fun), do: err()
   def scores_apply(_scores_fn, _a, _b), do: err()
 
   # Bio Types Alignment

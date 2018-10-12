@@ -27,14 +27,14 @@ defmodule ExBio.Alignment.Pairwise.Aligner do
     do: RustBio.alignment_pairwise_aligner_with_capacity_and_scoring(m, n, scoring)
 
   def custom(aligner, x, y),
-    do: RustBio.alignment_pairwise_aligner_custom(aligner, x, y)
+    do: RustBio.alignment_pairwise_aligner_apply(aligner, :custom, x, y)
 
   def semiglobal(aligner, x, y),
-    do: RustBio.alignment_pairwise_aligner_semiglobal(aligner, x, y)
+    do: RustBio.alignment_pairwise_aligner_apply(aligner, :semiglobal, x, y)
 
   def global(aligner, x, y),
-    do: RustBio.alignment_pairwise_aligner_global(aligner, x, y)
+    do: RustBio.alignment_pairwise_aligner_apply(aligner, :global, x, y)
 
   def local(aligner, x, y),
-    do: RustBio.alignment_pairwise_aligner_local(aligner, x, y)
+    do: RustBio.alignment_pairwise_aligner_apply(aligner, :local, x, y)
 end

@@ -11,48 +11,40 @@ mod atoms {
     }
 }
 
+#[derive(NifUnitEnum, Clone)]
+pub enum FunType {
+    Blosum62,
+    Pam120,
+    Pam200,
+    Pam250,
+    Pam40,
+}
+
 pub struct FnScore {
     fun: fn(u8, u8) -> i32,
 }
 
-pub fn blosum62<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let score_fn = FnScore {
-        fun: bio::scores::blosum62,
+pub fn fun<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let fun_type: FunType = args[0].decode()?;
+    let score_fn = match fun_type {
+        FunType::Blosum62 => FnScore {
+            fun: bio::scores::blosum62,
+        },
+        FunType::Pam120 => FnScore {
+            fun: bio::scores::pam120,
+        },
+        FunType::Pam200 => FnScore {
+            fun: bio::scores::pam200,
+        },
+        FunType::Pam250 => FnScore {
+            fun: bio::scores::pam250,
+        },
+        FunType::Pam40 => FnScore {
+            fun: bio::scores::pam40,
+        },
     };
     let resource = ResourceArc::new(score_fn);
-    Ok(resource.encode(env))
-}
-
-pub fn pam120<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let score_fn = FnScore {
-        fun: bio::scores::pam120,
-    };
-    let resource = ResourceArc::new(score_fn);
-    Ok(resource.encode(env))
-}
-
-pub fn pam200<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let score_fn = FnScore {
-        fun: bio::scores::pam200,
-    };
-    let resource = ResourceArc::new(score_fn);
-    Ok(resource.encode(env))
-}
-
-pub fn pam250<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let score_fn = FnScore {
-        fun: bio::scores::pam250,
-    };
-    let resource = ResourceArc::new(score_fn);
-    Ok(resource.encode(env))
-}
-
-pub fn pam40<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let score_fn = FnScore {
-        fun: bio::scores::pam40,
-    };
-    let resource = ResourceArc::new(score_fn);
-    Ok(resource.encode(env))
+    Ok((atoms::ok(), resource).encode(env))
 }
 
 pub fn apply<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {

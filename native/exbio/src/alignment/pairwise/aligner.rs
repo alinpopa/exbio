@@ -16,6 +16,14 @@ mod atoms {
     }
 }
 
+#[derive(NifUnitEnum, Clone)]
+pub enum Op {
+    Custom,
+    Global,
+    Semiglobal,
+    Local,
+}
+
 pub struct Aligner {
     aligner: RwLock<BioAligner<MatchFunc>>,
 }
@@ -97,50 +105,20 @@ pub fn with_capacity_and_scoring<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResu
     }
 }
 
-pub fn custom<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+pub fn apply<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let resource: ResourceArc<Aligner> = args[0].decode()?;
     let mut aligner = resource.aligner.write().unwrap();
-    let x: String = args[1].decode()?;
-    let y: String = args[2].decode()?;
+    let op: Op = args[1].decode()?;
+    let x: String = args[2].decode()?;
+    let y: String = args[3].decode()?;
     let x: TextSlice = x.as_bytes();
     let y: TextSlice = y.as_bytes();
-    let alignment = aligner.custom(x, y);
-    let alignment = alignment::from_bio(alignment);
-    Ok((atoms::ok(), alignment).encode(env))
-}
-
-pub fn semiglobal<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let resource: ResourceArc<Aligner> = args[0].decode()?;
-    let mut aligner = resource.aligner.write().unwrap();
-    let x: String = args[1].decode()?;
-    let y: String = args[2].decode()?;
-    let x: TextSlice = x.as_bytes();
-    let y: TextSlice = y.as_bytes();
-    let alignment = aligner.semiglobal(x, y);
-    let alignment = alignment::from_bio(alignment);
-    Ok((atoms::ok(), alignment).encode(env))
-}
-
-pub fn global<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let resource: ResourceArc<Aligner> = args[0].decode()?;
-    let mut aligner = resource.aligner.write().unwrap();
-    let x: String = args[1].decode()?;
-    let y: String = args[2].decode()?;
-    let x: TextSlice = x.as_bytes();
-    let y: TextSlice = y.as_bytes();
-    let alignment = aligner.global(x, y);
-    let alignment = alignment::from_bio(alignment);
-    Ok((atoms::ok(), alignment).encode(env))
-}
-
-pub fn local<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let resource: ResourceArc<Aligner> = args[0].decode()?;
-    let mut aligner = resource.aligner.write().unwrap();
-    let x: String = args[1].decode()?;
-    let y: String = args[2].decode()?;
-    let x: TextSlice = x.as_bytes();
-    let y: TextSlice = y.as_bytes();
-    let alignment = aligner.local(x, y);
+    let alignment = match op {
+        Op::Custom => aligner.custom(x, y),
+        Op::Global => aligner.global(x, y),
+        Op::Semiglobal => aligner.semiglobal(x, y),
+        Op::Local => aligner.local(x, y),
+    };
     let alignment = alignment::from_bio(alignment);
     Ok((atoms::ok(), alignment).encode(env))
 }
