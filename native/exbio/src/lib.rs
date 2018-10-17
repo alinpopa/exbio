@@ -36,6 +36,18 @@ rustler_export_nifs! {
         ("alignment_pairwise_aligner_apply", 4, alignment::pairwise::aligner::apply,
          SchedulerFlags::DirtyCpu),
 
+        ("alignment_pairwise_banded_aligner_new", 5, alignment::pairwise::banded::aligner::new),
+        ("alignment_pairwise_banded_aligner_with_capacity", 7, alignment::pairwise::banded::aligner::with_capacity),
+        ("alignment_pairwise_banded_aligner_with_scoring", 3, alignment::pairwise::banded::aligner::with_scoring),
+        ("alignment_pairwise_banded_aligner_with_capacity_and_scoring", 5, alignment::pairwise::banded::aligner::with_capacity_and_scoring),
+        ("alignment_pairwise_banded_aligner_apply_with_prehash", 5, alignment::pairwise::banded::aligner::apply_with_prehash,
+         SchedulerFlags::DirtyCpu),
+        // TODO: "alignment_pairwise_banded_aligner_custom_with_matches", 4, alignment::pairwise::banded::aligner::custom_with_matches),
+        // TODO: "alignment_pairwise_banded_aligner_custom_with_expanded_matches", 4, alignment::pairwise::banded::aligner::custom_with_expanded_matches),
+        // TODO: "alignment_pairwise_banded_aligner_semiglobal_with_prehash", 4, alignment::pairwise::banded::aligner::semiglobal_with_prehash),
+        ("alignment_pairwise_banded_aligner_apply", 4, alignment::pairwise::banded::aligner::apply,
+         SchedulerFlags::DirtyCpu),
+
         ("alignment_pairwise_scoring_new", 3, alignment::pairwise::scoring::new),
         ("alignment_pairwise_scoring_from_scores", 4, alignment::pairwise::scoring::from_scores),
         ("alignment_pairwise_scoring_from_scoring", 1, alignment::pairwise::scoring::from_scoring),
@@ -65,6 +77,7 @@ fn on_load<'a>(env: Env<'a>, _load_info: Term<'a>) -> bool {
     resource_struct_init!(scores::FnScore, env);
     resource_struct_init!(alignment::pairwise::matchfunc::MatchFunc, env);
     resource_struct_init!(alignment::pairwise::aligner::Aligner, env);
+    resource_struct_init!(alignment::pairwise::banded::aligner::Aligner, env);
     resource_struct_init!(alignment::pairwise::scoring::ScoringRef, env);
     resource_struct_init!(alignment::pairwise::tracebackcell::TracebackCell, env);
     resource_struct_init!(types::alignment::AlignmentRef, env);

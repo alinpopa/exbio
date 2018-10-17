@@ -24,6 +24,30 @@ defmodule ExBio.Nif.RustBio do
   def alignment_pairwise_aligner_with_capacity_and_scoring(_m, _n, _scoring), do: err()
   def alignment_pairwise_aligner_apply(_aligner, _op, _x, _y), do: err()
 
+  # Alignment Pairwise Banded Aligner
+  def alignment_pairwise_banded_aligner_new(_gap_open, _gap_extend, _match_fun, _k, _w), do: err()
+
+  def alignment_pairwise_banded_aligner_with_capacity(
+        _m,
+        _n,
+        _gap_open,
+        _gap_extend,
+        _match_fun,
+        _k,
+        _w
+      ),
+      do: err()
+
+  def alignment_pairwise_banded_aligner_with_scoring(_scoring, _k, _w), do: err()
+
+  def alignment_pairwise_banded_aligner_with_capacity_and_scoring(_m, _n, _scoring, _k, _w),
+    do: err()
+
+  def alignment_pairwise_banded_aligner_apply(_aligner, _op, _x, _y), do: err()
+
+  def alignment_pairwise_banded_aligner_apply_with_prehash(_aligner, _op, _x, _y, _kmer_hash),
+    do: err()
+
   # Alignment Pairwise Scoring
   def alignment_pairwise_scoring_new(_gap_open, _gap_extend, _match_func), do: err()
 
