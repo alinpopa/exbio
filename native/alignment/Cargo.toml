@@ -1,0 +1,17 @@
+[package]
+name = "alignment"
+version = "0.1.0"
+authors = []
+
+[lib]
+name = "alignment"
+path = "src/lib.rs"
+crate-type = ["dylib"]
+
+[dependencies]
+rustler = "0.18.0"
+rustler_codegen = "0.18.0"
+bio = "0.22.0"
+bio-types = "0.4.0"
+types_lib = { path = "../types_lib" }
+lazy_static = "1.0"

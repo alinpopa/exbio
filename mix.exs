@@ -29,6 +29,14 @@ defmodule ExBio.MixProject do
     [exbio: [
       path: "native/exbio",
       mode: (if Mix.env == :prod, do: :release, else: :debug),
+    ],
+    alignment: [
+      path: "native/alignment",
+      mode: (if Mix.env == :prod, do: :release, else: :debug),
+    ],
+    types: [
+      path: "native/types",
+      mode: (if Mix.env == :prod, do: :release, else: :debug),
     ]]
   end
 end

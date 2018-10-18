@@ -1,7 +1,7 @@
 defmodule ExBio.Alignment.Distance do
-  alias ExBio.Nif.RustBio
+  alias ExBio.Nif.Alignment
 
-  def hamming(x, y), do: RustBio.alignment_dist_hdist(x, y)
+  def hamming(x, y), do: Alignment.dist_hdist(x, y)
 
-  def levenshtein(x, y), do: RustBio.alignment_dist_ldist(x, y)
+  def levenshtein(x, y), do: Alignment.dist_ldist(x, y)
 end
