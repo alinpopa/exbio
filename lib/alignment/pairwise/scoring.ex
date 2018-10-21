@@ -19,14 +19,14 @@ defmodule ExBio.Alignment.Pairwise.Scoring do
   end
 
   def new(gap_open, gap_extend, match_func) when gap_open <= 0 and gap_extend <= 0,
-    do: RustBio.alignment_pairwise_scoring_new(gap_open, gap_extend, match_func)
+    do: RustBio.align_pair_scoring_new(gap_open, gap_extend, match_func)
 
   def new(_gap_open, _gap_extend_, _match_func), do: {:error, :invalid_args}
 
   def from_scores(gap_open, gap_extend, match_score, mismatch_score)
       when gap_open <= 0 and gap_extend <= 0,
       do:
-        RustBio.alignment_pairwise_scoring_from_scores(
+        RustBio.align_pair_scoring_from_scores(
           gap_open,
           gap_extend,
           match_score,
@@ -37,14 +37,14 @@ defmodule ExBio.Alignment.Pairwise.Scoring do
     do: {:error, :invalid_args}
 
   def from_scoring(scoring),
-    do: RustBio.alignment_pairwise_scoring_from_scoring(scoring)
+    do: RustBio.align_pair_scoring_from_scoring(scoring)
 
   def to_scoring(scoring),
-    do: RustBio.alignment_pairwise_scoring_to_scoring(scoring)
+    do: RustBio.align_pair_scoring_to_scoring(scoring)
 
   def xclip(scoring, penalty),
-    do: RustBio.alignment_pairwise_scoring_xclip(scoring, penalty)
+    do: RustBio.align_pair_scoring_xclip(scoring, penalty)
 
   def yclip(scoring, penalty),
-    do: RustBio.alignment_pairwise_scoring_yclip(scoring, penalty)
+    do: RustBio.align_pair_scoring_yclip(scoring, penalty)
 end

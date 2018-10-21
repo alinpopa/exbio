@@ -156,6 +156,48 @@ defmodule ExBio.Alignment.Pairwise.Banded.AlignerTest do
     end
   end
 
+  describe "custom with matches" do
+    test "returns the right alignment" do
+      x = "AGCACAAGTGTGCGCTATACAGGAAGTAGGAGTACACGTGTCA"
+
+      y =
+        "CAGTTGTACTAGCATGACCAGTTGTACTAGCATGACAGCACACGTGTGCGCTATACAGTAAGTAGTAGTACACGTGTCACAGTTGTACTAGCATGACCAGTTGTACTAGCATGAC"
+
+      eq = MatchFunc.eq(1, -1)
+      {:ok, scoring} = Scoring.new(-5, -1, eq)
+      {:ok, scoring} = Scoring.xclip(scoring, Scoring.min_score())
+      {:ok, scoring} = Scoring.yclip(scoring, 0)
+      {:ok, aligner} = Aligner.with_scoring(scoring, 8, 6)
+      {:ok, alignment} = Aligner.custom_with_matches(aligner, x, y, [{4, 2}])
+
+      assert %ExBio.Types.Alignment{} = alignment
+      assert alignment.score == -5
+      assert alignment.xstart == 0
+      assert alignment.ystart == 4
+    end
+  end
+
+  describe "custom with expanded matches" do
+    test "returns the right alignment" do
+      x = "AGCACAAGTGTGCGCTATACAGGAAGTAGGAGTACACGTGTCA"
+
+      y =
+        "CAGTTGTACTAGCATGACCAGTTGTACTAGCATGACAGCACACGTGTGCGCTATACAGTAAGTAGTAGTACACGTGTCACAGTTGTACTAGCATGACCAGTTGTACTAGCATGAC"
+
+      eq = MatchFunc.eq(1, -1)
+      {:ok, scoring} = Scoring.new(-5, -1, eq)
+      {:ok, scoring} = Scoring.xclip(scoring, Scoring.min_score())
+      {:ok, scoring} = Scoring.yclip(scoring, 0)
+      {:ok, aligner} = Aligner.with_scoring(scoring, 8, 6)
+      {:ok, alignment} = Aligner.custom_with_expanded_matches(aligner, x, y, [{4, 2}], 4, true)
+
+      assert %ExBio.Types.Alignment{} = alignment
+      assert alignment.score == -5
+      assert alignment.xstart == 0
+      assert alignment.ystart == 4
+    end
+  end
+
   describe "semiglobal" do
     test "returns the right alignment" do
       x = "ACCGTGGAT"
@@ -179,6 +221,20 @@ defmodule ExBio.Alignment.Pairwise.Banded.AlignerTest do
                match: 0,
                match: 0
              ]
+    end
+  end
+
+  describe "semiglobal with prehash" do
+    test "returns the right alignment" do
+      x = "ACCGTGGAT"
+      y = "AAAAACCGTTGAT"
+      eq = MatchFunc.eq(1, -1)
+      {:ok, aligner} = Aligner.with_capacity(String.length(x), String.length(y), -5, -1, eq, 8, 6)
+      {:ok, alignment} = Aligner.semiglobal_with_prehash(aligner, x, y, {:y, 8})
+
+      assert %ExBio.Types.Alignment{} = alignment
+      assert alignment.ystart == 4
+      assert alignment.xstart == 0
     end
   end
 

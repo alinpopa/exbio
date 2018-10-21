@@ -11,6 +11,7 @@ test:
 
 format:
 	mix format "{lib,test}/**/*.{ex,exs}"
+	cd native/exbio && cargo fmt
 
 clean:
 	mix clean

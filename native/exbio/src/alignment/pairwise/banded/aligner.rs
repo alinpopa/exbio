@@ -148,12 +148,48 @@ pub fn apply_with_prehash<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term
     let y: TextSlice = y.as_bytes();
     let (kmer_hash_type, k): (KmerHashType, usize) = args[4].decode()?;
     let y_kmer_hash = get_kmer_hash(y, k, kmer_hash_type);
-    let alignment = match op {
-        Op::Custom => aligner.custom_with_prehash(x, y, &y_kmer_hash),
-        Op::Global => aligner.global(x, y),
-        Op::Semiglobal => aligner.semiglobal(x, y),
-        Op::Local => aligner.local(x, y),
+    let result = match op {
+        Op::Custom => {
+            let alignment = aligner.custom_with_prehash(x, y, &y_kmer_hash);
+            let alignment = alignment::from_bio(alignment);
+            (atoms::ok(), alignment).encode(env)
+        }
+        Op::Semiglobal => {
+            let alignment = aligner.semiglobal_with_prehash(x, y, &y_kmer_hash);
+            let alignment = alignment::from_bio(alignment);
+            (atoms::ok(), alignment).encode(env)
+        }
+        _ => (atoms::error(), atoms::invalid_args()).encode(env),
     };
+    Ok(result)
+}
+
+pub fn custom_with_matches<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let resource: ResourceArc<Aligner> = args[0].decode()?;
+    let mut aligner = resource.aligner.write().unwrap();
+    let x: String = args[1].decode()?;
+    let y: String = args[2].decode()?;
+    let x: TextSlice = x.as_bytes();
+    let y: TextSlice = y.as_bytes();
+    let matches: Vec<(u32, u32)> = args[3].decode()?;
+    let matches = matches.as_slice();
+    let alignment = aligner.custom_with_matches(x, y, matches);
+    let alignment = alignment::from_bio(alignment);
+    Ok((atoms::ok(), alignment).encode(env))
+}
+
+pub fn custom_with_expanded_matches<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let resource: ResourceArc<Aligner> = args[0].decode()?;
+    let mut aligner = resource.aligner.write().unwrap();
+    let x: String = args[1].decode()?;
+    let y: String = args[2].decode()?;
+    let x: TextSlice = x.as_bytes();
+    let y: TextSlice = y.as_bytes();
+    let matches: Vec<(u32, u32)> = args[3].decode()?;
+    let allowed_mismatches: Option<usize> = args[4].decode()?;
+    let use_lcskpp_union: bool = args[5].decode()?;
+    let alignment =
+        aligner.custom_with_expanded_matches(x, y, matches, allowed_mismatches, use_lcskpp_union);
     let alignment = alignment::from_bio(alignment);
     Ok((atoms::ok(), alignment).encode(env))
 }

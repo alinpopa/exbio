@@ -12,7 +12,7 @@ defmodule ExBio.Types.Alignment do
             mode: :custom
 
   def new(alignment) do
-    case RustBio.types_alignment_new(alignment) do
+    case RustBio.types_align_new(alignment) do
       {:ok, ref} when is_reference(ref) ->
         {:ok, ref}
 
@@ -22,20 +22,20 @@ defmodule ExBio.Types.Alignment do
   end
 
   def pretty(alignment, x, y),
-    do: RustBio.types_alignment_pretty(alignment, x, y)
+    do: RustBio.types_align_pretty(alignment, x, y)
 
   def cigar(alignment, hard_clip),
-    do: RustBio.types_alignment_cigar(alignment, hard_clip)
+    do: RustBio.types_align_cigar(alignment, hard_clip)
 
   def path(alignment),
-    do: RustBio.types_alignment_path(alignment)
+    do: RustBio.types_align_path(alignment)
 
   def filter_clip_operations(alignment),
-    do: RustBio.types_alignment_filter_clip_operations(alignment)
+    do: RustBio.types_align_filter_clip_operations(alignment)
 
   def y_aln_len(alignment),
-    do: RustBio.types_alignment_y_aln_len(alignment)
+    do: RustBio.types_align_y_aln_len(alignment)
 
   def x_aln_len(alignment),
-    do: RustBio.types_alignment_x_aln_len(alignment)
+    do: RustBio.types_align_x_aln_len(alignment)
 end
