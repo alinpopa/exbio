@@ -95,4 +95,13 @@ defmodule ExBio.Nif.RustBio do
   def types_align_filter_clip_operations(_alignment), do: err()
   def types_align_y_aln_len(_alignment), do: err()
   def types_align_x_aln_len(_alignment), do: err()
+
+  # Alphabets Alphabet
+  def alph_alphabet_new(_text), do: err()
+  def alph_alphabet_insert(_alphabet, _a), do: err()
+  def alph_alphabet_is_word(_alphabet, _text), do: err()
+  def alph_alphabet_len(_alphabet), do: err()
+
+  # Alphabets DNA
+  def alph_dna_alphabet(), do: err()
 end

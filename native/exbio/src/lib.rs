@@ -11,6 +11,7 @@ use rustler::schedule::SchedulerFlags;
 use rustler::{Env, Term};
 
 mod alignment;
+mod alphabets;
 mod pattern_matching;
 mod scores;
 mod types;
@@ -70,6 +71,12 @@ rustler_export_nifs! {
         ("types_align_filter_clip_operations", 1, types::alignment::filter_clip_operations),
         ("types_align_y_aln_len", 1, types::alignment::y_aln_len),
         ("types_align_x_aln_len", 1, types::alignment::x_aln_len),
+
+        ("alph_alphabet_new", 1, alphabets::alphabet::new),
+        ("alph_alphabet_insert", 2, alphabets::alphabet::insert),
+        ("alph_alphabet_is_word", 2, alphabets::alphabet::is_word),
+        ("alph_alphabet_len", 1, alphabets::alphabet::len),
+        ("alph_dna_alphabet", 0, alphabets::dna::alphabet),
     ],
     Some(on_load)
 }
@@ -82,5 +89,6 @@ fn on_load<'a>(env: Env<'a>, _load_info: Term<'a>) -> bool {
     resource_struct_init!(alignment::pairwise::scoring::ScoringRef, env);
     resource_struct_init!(alignment::pairwise::tracebackcell::TracebackCell, env);
     resource_struct_init!(types::alignment::AlignmentRef, env);
+    resource_struct_init!(alphabets::alphabet::AlphabetRef, env);
     true
 }

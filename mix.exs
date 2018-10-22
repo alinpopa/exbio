@@ -9,7 +9,8 @@ defmodule ExBio.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       compilers: [:rustler] ++ Mix.compilers,
-      rustler_crates: rustler_crates()
+      rustler_crates: rustler_crates(),
+      dialyzer: [ flags: ["-Wunmatched_returns", :error_handling, :race_conditions, :underspecs]]
     ]
   end
 
@@ -21,6 +22,7 @@ defmodule ExBio.MixProject do
 
   defp deps do
     [
+      {:dialyxir, "~> 1.0.0-rc.3", only: [:dev], runtime: false},
       {:rustler, "~> 0.18.0"}
     ]
   end

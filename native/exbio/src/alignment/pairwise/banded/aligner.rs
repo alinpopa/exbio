@@ -51,7 +51,7 @@ pub fn new<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
             let resource = ResourceArc::new(Aligner {
                 aligner: RwLock::new(aligner),
             });
-            Ok((atoms::ok(), resource.encode(env)).encode(env))
+            Ok((atoms::ok(), resource).encode(env))
         }
         Err(_) => Ok((atoms::error(), atoms::invalid_args()).encode(env)),
     }
@@ -78,7 +78,7 @@ pub fn with_capacity<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>>
             let resource = ResourceArc::new(Aligner {
                 aligner: RwLock::new(aligner),
             });
-            Ok((atoms::ok(), resource.encode(env)).encode(env))
+            Ok((atoms::ok(), resource).encode(env))
         }
         Err(_) => Ok((atoms::error(), atoms::invalid_args()).encode(env)),
     }
@@ -95,7 +95,7 @@ pub fn with_scoring<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> 
             let resource = ResourceArc::new(Aligner {
                 aligner: RwLock::new(aligner),
             });
-            Ok((atoms::ok(), resource.encode(env)).encode(env))
+            Ok((atoms::ok(), resource).encode(env))
         }
         Err(_) => Ok((atoms::error(), atoms::invalid_args()).encode(env)),
     }
@@ -114,7 +114,7 @@ pub fn with_capacity_and_scoring<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResu
             let resource = ResourceArc::new(Aligner {
                 aligner: RwLock::new(aligner),
             });
-            Ok((atoms::ok(), resource.encode(env)).encode(env))
+            Ok((atoms::ok(), resource).encode(env))
         }
         Err(_) => Ok((atoms::error(), atoms::invalid_args()).encode(env)),
     }
