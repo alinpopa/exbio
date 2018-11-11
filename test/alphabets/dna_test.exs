@@ -4,8 +4,18 @@ defmodule ExBio.Alphabets.DnaTest do
   alias ExBio.Alphabets.Dna
 
   describe "alphabet" do
-    test "creates new alphabet reference" do
+    test "creates new default alphabet reference" do
       {:ok, alphabet} = Dna.alphabet()
+      assert is_reference(alphabet) == true
+    end
+
+    test "creates new iupac alphabet reference" do
+      {:ok, alphabet} = Dna.alphabet(:iupac)
+      assert is_reference(alphabet) == true
+    end
+
+    test "creates new n alphabet reference" do
+      {:ok, alphabet} = Dna.alphabet(:n)
       assert is_reference(alphabet) == true
     end
   end

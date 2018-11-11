@@ -10,8 +10,20 @@ mod atoms {
     }
 }
 
-pub fn alphabet<'a>(env: Env<'a>, _args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let alphabet = dna::alphabet();
+#[derive(NifUnitEnum)]
+pub enum AlphabetType {
+    Default,
+    Iupac,
+    N,
+}
+
+pub fn alphabet<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let alphabet_type: AlphabetType = args[0].decode()?;
+    let alphabet = match alphabet_type {
+        AlphabetType::Default => dna::alphabet(),
+        AlphabetType::Iupac => dna::iupac_alphabet(),
+        AlphabetType::N => dna::n_alphabet(),
+    };
     let resource = ResourceArc::new(alphabet::AlphabetRef {
         alphabet: RwLock::new(alphabet),
     });
