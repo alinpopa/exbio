@@ -3,4 +3,7 @@ defmodule ExBio.Alphabets.Dna do
 
   def alphabet(),
     do: RustBio.alph_dna_alphabet()
+
+  def complement(char),
+    do: RustBio.alph_dna_complement(char)
 end
