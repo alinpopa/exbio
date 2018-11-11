@@ -100,7 +100,9 @@ defmodule ExBio.Nif.RustBio do
   def alph_alphabet_new(_text), do: err()
   def alph_alphabet_insert(_alphabet, _a), do: err()
   def alph_alphabet_is_word(_alphabet, _text), do: err()
+  def alph_alphabet_max_symbol(_alphabet), do: err()
   def alph_alphabet_len(_alphabet), do: err()
+  def alph_alphabet_is_empty(_alphabet), do: err()
 
   # Alphabets DNA
   def alph_dna_alphabet(), do: err()

@@ -75,7 +75,9 @@ rustler_export_nifs! {
         ("alph_alphabet_new", 1, alphabets::alphabet::new),
         ("alph_alphabet_insert", 2, alphabets::alphabet::insert),
         ("alph_alphabet_is_word", 2, alphabets::alphabet::is_word),
+        ("alph_alphabet_max_symbol", 1, alphabets::alphabet::max_symbol),
         ("alph_alphabet_len", 1, alphabets::alphabet::len),
+        ("alph_alphabet_is_empty", 1, alphabets::alphabet::is_empty),
         ("alph_dna_alphabet", 0, alphabets::dna::alphabet),
     ],
     Some(on_load)
