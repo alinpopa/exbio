@@ -18,4 +18,7 @@ defmodule ExBio.Alphabets.Alphabet do
 
   def is_empty(alphabet),
     do: RustBio.alph_alphabet_is_empty(alphabet)
+
+  def alphabet(alphabets, alphabet_type),
+    do: RustBio.alph_alphabet_alphabet(alphabets, alphabet_type)
 end
