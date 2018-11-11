@@ -81,6 +81,7 @@ rustler_export_nifs! {
 
         ("alph_dna_alphabet", 1, alphabets::dna::alphabet),
         ("alph_dna_complement", 1, alphabets::dna::complement),
+        ("alph_dna_revcomp", 1, alphabets::dna::revcomp),
     ],
     Some(on_load)
 }

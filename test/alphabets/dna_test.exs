@@ -35,4 +35,12 @@ defmodule ExBio.Alphabets.DnaTest do
       assert complement == ?A
     end
   end
+
+  describe "revcomp" do
+    test "return reverse complement of the given text" do
+      complement = Dna.revcomp("AACCTT")
+
+      assert complement == "AAGGTT"
+    end
+  end
 end

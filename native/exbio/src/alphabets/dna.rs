@@ -35,3 +35,11 @@ pub fn complement<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let complement = dna::complement(char);
     Ok(complement.encode(env))
 }
+
+pub fn revcomp<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let text: String = args[0].decode()?;
+    let text = text.into_bytes();
+    let complement = dna::revcomp(&text);
+    let complement = String::from_utf8(complement).expect("");
+    Ok(complement.encode(env))
+}

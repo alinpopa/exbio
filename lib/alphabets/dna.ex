@@ -8,4 +8,7 @@ defmodule ExBio.Alphabets.Dna do
 
   def complement(char),
     do: RustBio.alph_dna_complement(char)
+
+  def revcomp(text),
+    do: RustBio.alph_dna_revcomp(text)
 end

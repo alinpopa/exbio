@@ -107,4 +107,5 @@ defmodule ExBio.Nif.RustBio do
   # Alphabets DNA
   def alph_dna_alphabet(_type), do: err()
   def alph_dna_complement(_char), do: err()
+  def alph_dna_revcomp(_text), do: err()
 end
