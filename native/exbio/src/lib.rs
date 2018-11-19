@@ -81,6 +81,8 @@ rustler_export_nifs! {
         ("alph_alphabet_alphabet", 2, alphabets::alphabet::alphabet),
         ("alph_alphabet_complement", 2, alphabets::alphabet::complement),
         ("alph_alphabet_revcomp", 2, alphabets::alphabet::revcomp),
+
+        ("alph_ranktransform_new", 1, alphabets::ranktransform::new),
     ],
     Some(on_load)
 }
@@ -94,5 +96,6 @@ fn on_load<'a>(env: Env<'a>, _load_info: Term<'a>) -> bool {
     resource_struct_init!(alignment::pairwise::tracebackcell::TracebackCell, env);
     resource_struct_init!(types::alignment::AlignmentRef, env);
     resource_struct_init!(alphabets::alphabet::AlphabetRef, env);
+    resource_struct_init!(alphabets::ranktransform::RankTransformRef, env);
     true
 }

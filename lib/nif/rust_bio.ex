@@ -106,4 +106,7 @@ defmodule ExBio.Nif.RustBio do
   def alph_alphabet_alphabet(_alphabets, _alphabet_type), do: err()
   def alph_alphabet_complement(_alphabet_type, _char), do: err()
   def alph_alphabet_revcomp(_alphabet_type, _text), do: err()
+
+  # Alphabets RankTransformation
+  def alph_ranktransform_new(_alphabet), do: err()
 end
