@@ -24,12 +24,15 @@ be found at [https://hexdocs.pm/exbio](https://hexdocs.pm/exbio).
 - `rust >= 1.29.0`
 - `elixir >= 1.7`
 
-## Build
+## Build/Tests
 
 ```
-mix deps.get
-mix compile
+make
 ```
+
+## Docker
+
+- run the build/tests within docker by `make -C docker`
 
 ## Examples
 
