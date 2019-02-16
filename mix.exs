@@ -5,7 +5,7 @@ defmodule ExBio.MixProject do
     [
       app: :exbio,
       version: "0.1.0",
-      elixir: "~> 1.7",
+      elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       compilers: [:rustler] ++ Mix.compilers,
@@ -23,7 +23,7 @@ defmodule ExBio.MixProject do
   defp deps do
     [
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
-      {:rustler, "~> 0.18.0"}
+      {:rustler, "~> 0.19.0"}
     ]
   end
 
