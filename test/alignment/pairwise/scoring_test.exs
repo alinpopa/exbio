@@ -40,7 +40,7 @@ defmodule ExBio.Alignment.Pairwise.ScoringTest do
 
   describe "from scoring" do
     test "validates arguments" do
-      assert_raise ArgumentError, fn ->
+      assert_raise ErlangError, fn ->
         Scoring.from_scoring(%Scoring{})
       end
     end

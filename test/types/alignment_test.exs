@@ -17,7 +17,9 @@ defmodule ExBio.Types.AlignmentTest do
 
     test "returns invalid args when passing wrong alignment data" do
       alignment = %ExBio.Types.Alignment{operations: [{:xclip, 123}], mode: nil}
-      assert ExBio.Types.Alignment.new(alignment) == {:error, :invalid_args}
+      assert_raise ErlangError, fn ->
+        ExBio.Types.Alignment.new(alignment)
+      end
     end
   end
 
@@ -135,7 +137,7 @@ defmodule ExBio.Types.AlignmentTest do
       {:ok, pretty} =
         ExBio.Types.Alignment.pretty(alignment, "CCGTCCGGCAAGGG", "AAAAACCGTTGACGGCCAA")
 
-      assert pretty == "CCGTCCGGCA \n           \n          C\n\n\n"
+      assert pretty == "CCGTCCGGCA \n           \n          A\n\n\n"
 
       :ok = ExBio.Types.Alignment.filter_clip_operations(alignment)
 
